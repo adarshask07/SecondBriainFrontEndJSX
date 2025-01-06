@@ -1,0 +1,28 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+import App from './App';
+import './index.css';
+import store from './reducer';
+import { ToastBar, Toaster } from 'react-hot-toast';
+import { BrowserRouter } from 'react-router-dom';
+// Ensure the root element exists and is non-null
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  throw new Error('Root element not found');
+}
+
+// Render the application with the Redux Provider
+ReactDOM.createRoot(rootElement).render(
+  <BrowserRouter  future={{
+    v7_relativeSplatPath: true,
+    v7_startTransition: true,
+  }}>
+    <React.StrictMode>
+      <Provider store={store}>
+        <App />
+        <Toaster/>
+      </Provider>
+    </React.StrictMode>
+  </BrowserRouter>
+);
