@@ -2,9 +2,10 @@ import React from 'react';
 import { Plus, LogOut } from 'lucide-react';
 import { Container } from './ui/Container';
 
-import { logout } from '../Services/AuthAPI'; // Import logout action
+// import { logout } from '../Services/AuthAPI'; // Import logout action
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { logout } from '../Services/authApi';
 
 const Navbar = ({ onNewMemory }) => {
   const dispatch = useDispatch();

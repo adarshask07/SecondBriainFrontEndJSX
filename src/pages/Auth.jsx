@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Brain } from "lucide-react";
 import { AnimatedCard } from "../Components/ui/AnimatedCard";
@@ -10,10 +10,13 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const token = useSelector((state) => state.auth.token); // Get token directly from Redux state
 
   const error = useSelector((state) => state.auth.error); // Get error directly from Redux state
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,6 +27,13 @@ const Auth = () => {
       dispatch(signup(email, username, password, navigate)); // Dispatch signup action
     }
   };
+
+  useEffect(()=>{
+    if (token) {
+      navigate("/memories");
+    }
+  
+  },[])
 
   return (
     <div

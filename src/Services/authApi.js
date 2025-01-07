@@ -32,14 +32,15 @@ export function login (email, password,navigate) {
                 id: toastId,
             });
            
-            navigate("/");
+            navigate("/memories");
 
         } catch (error) {
             toast.error(error.message,{
                 id: toastId,
             });
             dispatch(setError(error.message));
-            console.log("Comes here")
+            console.log('first')
+            navigate("/");
         }
         dispatch(setLoading(false));
         // toast.dismiss(toastId); 
@@ -69,6 +70,7 @@ export function signup (email,username, password,navigate) {
             navigate("/");
         } catch (error) {
             toast.error(error.message);
+            dispatch(setError(error.message));
         }
         dispatch(setLoading(false));
         toast.dismiss(toastId);
@@ -83,6 +85,7 @@ export const logout = (navigate) => {
         dispatch(setToken(null));
         localStorage.removeItem("token");
         toast.success("Logout Successful");
-        navigate("/login");
+        navigate("/");
+        toast.dismiss(toastId);
     }
 }

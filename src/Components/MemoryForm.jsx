@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-import { X } from 'lucide-react';
+import React, { useState } from "react";
+import { X } from "lucide-react";
 
-export const MemoryForm = ({ memory, onSubmit, onClose }) => {
-  const [title, setTitle] = useState(memory?.title || '');
-  const [description, setDescription] = useState(memory?.description || '');
-  const [date, setDate] = useState(memory?.date || new Date().toISOString().split('T')[0]);
-  const [tagInput, setTagInput] = useState('');
-  const [tags, setTags] = useState(memory?.tags || []);
+export const MemoryForm = ({ onSubmit, onClose }) => {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [tagInput, setTagInput] = useState("");
+  const [tags, setTags] = useState([]);
 
-  const handleSubmit = (e) => {
+  const handleCreate = (e) => {
     e.preventDefault();
-    onSubmit({ title, description, date, tags });
+    const newMemory = { title, content, tags };
+    onSubmit(newMemory);
   };
 
   const handleAddTag = (e) => {
-    if (e.key === 'Enter' && tagInput.trim()) {
+    if (e.key === "Enter" && tagInput.trim()) {
       e.preventDefault();
       setTags([...tags, tagInput.trim()]);
-      setTagInput('');
+      setTagInput("");
     }
   };
 
@@ -29,10 +29,8 @@ export const MemoryForm = ({ memory, onSubmit, onClose }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[60]">
       <div className="bg-gray-800/95 backdrop-blur-lg rounded-xl p-6 w-full max-w-md border border-gray-700/50 max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold text-white">
-            {memory ? 'Edit Memory' : 'Create Memory'}
-          </h2>
-          <button 
+          <h2 className="text-xl font-semibold text-white">Create Memory</h2>
+          <button
             onClick={onClose}
             className="text-gray-400 hover:text-white transition-colors"
           >
@@ -40,9 +38,12 @@ export const MemoryForm = ({ memory, onSubmit, onClose }) => {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleCreate} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-1" htmlFor="title">
+            <label
+              className="block text-sm font-medium text-gray-400 mb-1"
+              htmlFor="title"
+            >
               Title
             </label>
             <input
@@ -57,32 +58,21 @@ export const MemoryForm = ({ memory, onSubmit, onClose }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-1" htmlFor="description">
-              Description
+            <label
+              className="block text-sm font-medium text-gray-400 mb-1"
+              htmlFor="content"
+            >
+              Content
             </label>
             <textarea
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              id="content"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
               className="w-full px-3 py-2 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter memory description"
               rows={4}
               required
             ></textarea>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-400 mb-1" htmlFor="date">
-              Date
-            </label>
-            <input
-              id="date"
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              className="w-full px-3 py-2 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
           </div>
 
           <div>
@@ -122,7 +112,7 @@ export const MemoryForm = ({ memory, onSubmit, onClose }) => {
             type="submit"
             className="w-full px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors"
           >
-            {memory ? 'Update Memory' : 'Create Memory'}
+            Create Memory
           </button>
         </form>
       </div>

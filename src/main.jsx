@@ -14,15 +14,19 @@ if (!rootElement) {
 
 // Render the application with the Redux Provider
 ReactDOM.createRoot(rootElement).render(
-  <BrowserRouter  future={{
-    v7_relativeSplatPath: true,
-    v7_startTransition: true,
-  }}>
-    <React.StrictMode>
+  <BrowserRouter>
+    {/* <React.StrictMode> */}
       <Provider store={store}>
         <App />
-        <Toaster/>
+        <Toaster  toastOptions={
+          {
+            style:{
+              background: '#000814',
+              color: '#fff',
+            }
+          }
+        }/>
       </Provider>
-    </React.StrictMode>
+    {/* </React.StrictMode> */}
   </BrowserRouter>
 );
