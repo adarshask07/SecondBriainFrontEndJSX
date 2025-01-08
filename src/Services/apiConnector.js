@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: "http://localhost:3000", // Set base URL here
+  baseURL: import.meta.env.VITE_API_URL, // Set base URL here
 });
 
 export const apiConnector = async (method, url, bodyData = {}, headers = {}, params = {}) => {

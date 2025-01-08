@@ -25,6 +25,7 @@ const Auth = () => {
       dispatch(login(email, password, navigate)); // Dispatch login action
     } else {
       dispatch(signup(email, username, password, navigate)); // Dispatch signup action
+      setIsLogin(true);
     }
   };
 
