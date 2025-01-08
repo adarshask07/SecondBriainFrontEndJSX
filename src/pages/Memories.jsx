@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { createMemory, getMemories } from "../Services/memoriesApi";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/Components/Navbar";
-import { MemoryForm } from "../components/MemoryForm";
-import SearchBar from "../components/SearchBar";
-import { AIResponseSection } from "../Components/AIResponseSection";
-import { RelatedMemoriesSection } from "../components/RelatedMemoriesSection";
-import { NormalMemories } from "../components/NormalMemories";
-import { Container } from "../components/ui/Container";
+import { MemoryForm } from "@/Components/MemoryForm";
+import SearchBar from "@/Components/SearchBar";
+import { AIResponseSection } from "@/Components/AIResponseSection";
+import { RelatedMemoriesSection } from "@/Components/RelatedMemoriesSection";
+import { NormalMemories } from "@/Components/NormalMemories";
+import { Container } from "@/Components/ui/Container";
 import { apiConnector } from "@/Services/apiConnector";
 import { getSearch } from "@/Services/searchApi";
 
