@@ -15,7 +15,7 @@ const handleTokenExpiry = (navigate) => {
 // Create Memory
 export function createMemory(token, memory) {
     return async (dispatch) => {
-        const navigate = useNavigate();
+       
         toast.remove();
         const toastId = toast.loading("Creating Memory...");
         dispatch(setLoading(true));
