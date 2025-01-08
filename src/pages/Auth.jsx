@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Brain } from "lucide-react";
-import { AnimatedCard } from "../Components/ui/AnimatedCard";
-import { login, signup } from "../Services/authApi";
+import { AnimatedCard } from "@/Components/ui/AnimatedCard";
+import { login, signup } from "@/Services/authApi";
 import { useDispatch, useSelector } from "react-redux";
 
 const Auth = () => {
