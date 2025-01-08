@@ -5,7 +5,7 @@ import { Container } from './ui/Container';
 // import { logout } from '../Services/AuthAPI'; // Import logout action
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { logout } from '../Services/authApi';
+import { logout } from '@/Services/authApi';
 
 const Navbar = ({ onNewMemory }) => {
   const dispatch = useDispatch();
