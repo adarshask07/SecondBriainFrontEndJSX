@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { MemoryCard } from "../components/MemoryCard";
+import { MemoryCard } from "./MemoryCard";
 import { Skeleton } from "@/Components/ui/skeleton";
 
 export const NormalMemories = ({ content, loading }) => (
