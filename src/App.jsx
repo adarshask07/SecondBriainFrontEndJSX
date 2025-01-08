@@ -35,8 +35,8 @@ const App = () => {
   // }, [navigate]);
 
   return (
-    <AuthProvider>
-      <Routes>
+    <AuthProvider >
+      <Routes >
         <Route path="/" element={<Auth />} />
         <Route path='/memories' element={<PrivateRoute><Memories/></PrivateRoute>}/>
         <Route path='/memory/:id' element={<PrivateRoute><MemoryPage/></PrivateRoute>}/>

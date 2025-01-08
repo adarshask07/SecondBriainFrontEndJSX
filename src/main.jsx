@@ -17,7 +17,7 @@ ReactDOM.createRoot(rootElement).render(
   <BrowserRouter>
     {/* <React.StrictMode> */}
       <Provider store={store}>
-        <App />
+        <App  />
         <Toaster  toastOptions={
           {
             style:{

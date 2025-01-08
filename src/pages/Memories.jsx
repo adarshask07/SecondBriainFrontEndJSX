@@ -1,28 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { MemoryCard } from "../components/MemoryCard";
-import { MemoryForm } from "../components/MemoryForm";
-import { Container } from "../components/ui/Container";
-import SearchBar from "../components/SearchBar";
-import Navbar from "../components/Navbar";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  createMemory,
-  deleteMemory,
-  getMemories,
-  updateMemories,
-} from "../Services/memoriesApi";
-
-import { Link, useNavigate } from "react-router-dom";
-import { SyncLoader } from "react-spinners";
-import { Skeleton } from "@/Components/ui/skeleton";
+import { createMemory, getMemories } from "../Services/memoriesApi";
+import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import { MemoryForm } from "../components/MemoryForm";
+import SearchBar from "../components/SearchBar";
+import { AIResponseSection } from "../Components/AIResponseSection";
+import { RelatedMemoriesSection } from "../components/RelatedMemoriesSection";
+import { NormalMemories } from "../components/NormalMemories";
+import { Container } from "../components/ui/Container";
+import { apiConnector } from "@/Services/apiConnector";
+import { getSearch } from "@/Services/searchApi";
 
 const Memories = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [aiResponse, setAIResponse] = useState(null);
+  const [showSearchResults, setShowSearchResults] = useState(false);
+  const [relatedContent, setRelatedContent] = useState([])  ;
   const [showForm, setShowForm] = useState(false);
-  const [editingMemory, setEditingMemory] = useState(null);
   const content = useSelector((state) => state.brain.memories || []);
   const token = useSelector((state) => state.auth.token);
-  const loading = useSelector((state) => state.brain.loading);
+  const [loadingSearch, setLoadingSearch] = useState(false)
+  const loading = useSelector((state)=> state.brain.loading)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -36,59 +35,75 @@ const Memories = () => {
 
   const handleFormSubmit = (newMemory) => {
     if (newMemory.title && newMemory.content) {
-      // Dispatch the action to create a new memory
       dispatch(createMemory(token, newMemory));
-
-      // Close the form after submission
       setShowForm(false);
     }
   };
 
+  const handleSearch = async () => {
+    if (!searchTerm.trim()) {
+      setAIResponse(null);
+      setShowSearchResults(false);
+      return;
+    }
 
+
+    try {
+      setShowSearchResults(true);
+      setLoadingSearch(true) ;
+      const response = await getSearch(token, searchTerm) ;
+      setAIResponse(response.data || []);
+      setRelatedContent(response.relatedData)
+      console.log(response)
+
+
+     
+    } catch (error) {
+      console.error("Error fetching AI response:", error);
+    }
+    setLoadingSearch(false) ;
+  };
+
+
+  const handleSearchTermChange = (term) => {
+    setSearchTerm(term);
+
+    if (!term.trim()) {
+      setAIResponse(null);
+      setShowSearchResults(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       <Navbar onNewMemory={() => setShowForm(true)} />
       {showForm && (
-        <MemoryForm onSubmit={handleFormSubmit} onClose={() => setShowForm(false)} />
+        <MemoryForm
+          onSubmit={handleFormSubmit}
+          onClose={() => setShowForm(false)}
+        />
       )}
-
       <main className="py-8">
         <Container>
-          <SearchBar value={searchTerm} onChange={setSearchTerm} />
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {loading
-              ? Array.from({ length: 6 }).map((_, index) => (
-                  <div
-                    key={index}
-                    className="p-4 rounded-lg bg-gray-800 shadow-md"
-                  >
-                    <Skeleton className="h-48 rounded-md mb-4" />
-                    <Skeleton className="h-6 w-1/2 mb-2" />
-                    <Skeleton className="h-6 w-1/3" />
-                  </div>
-                ))
-              : content?.map((memory) => (
-                  <Link to={`/memory/${memory._id}`}>
-                    <MemoryCard
-                      
-                      memory={memory}
-                     
-                    />
-                  </Link>
-                ))}
-          </div>
-
-          {content?.length === 0 && !loading && (
-            <div className="text-center text-gray-400 mt-12">
-              {searchTerm ? "No memories found" : "Add your first memory"}
-            </div>
+          <SearchBar
+            value={searchTerm}
+            onChange={handleSearchTermChange}
+            onSearch={handleSearch}
+          />
+          {showSearchResults ? (
+            <>
+              <AIResponseSection aiResponse={aiResponse}  loading={loadingSearch}/>
+              <RelatedMemoriesSection
+                relatedMemories={relatedContent}
+                searchTerm={searchTerm}
+                loading={loadingSearch}
+              />
+            </>
+          ) : (
+            <NormalMemories content={content} loading={loading} />
           )}
         </Container>
       </main>
-
-    
     </div>
   );
 };
