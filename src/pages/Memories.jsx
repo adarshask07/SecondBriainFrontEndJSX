@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createMemory, getMemories } from "../Services/memoriesApi";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import {Navbar} from "../components/Navbar";
 import { MemoryForm } from "../components/MemoryForm";
 import SearchBar from "../components/SearchBar";
 import { AIResponseSection } from "../Components/AIResponseSection";
