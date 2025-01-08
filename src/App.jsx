@@ -25,32 +25,17 @@ const PrivateRoute = ({ children }) => {
 const App = () => {
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (token) {
-  //     navigate("/memories");
-  //   } else {
-  //     navigate("/");
-  //   }
-  // }, [navigate]);
+
 
   return (
-    <AuthProvider >
+ 
       <Routes >
         <Route path="/" element={<Auth />} />
         <Route path='/memories' element={<PrivateRoute><Memories/></PrivateRoute>}/>
         <Route path='/memory/:id' element={<PrivateRoute><MemoryPage/></PrivateRoute>}/>
-        {/* <Route  path='/'  element={ <AnimatedCard> <Hello/> </AnimatedCard>}></Route> */}
-        {/* <Route
-          path="/memories"
-          element={
-            <PrivateRoute>
-              <Memories />
-            </PrivateRoute>
-          }
-        /> */}
+      
       </Routes>
-    </AuthProvider>
+   
   );
 };
 
