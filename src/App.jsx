@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { AuthProvider } from './context/AuthContext';
+
 import Auth from './pages/Auth';
 import Hello from './pages/hello';
 import { AnimatedCard } from './Components/ui/AnimatedCard';
