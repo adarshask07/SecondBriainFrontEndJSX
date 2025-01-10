@@ -105,7 +105,7 @@ const Memories = () => {
               {/* Displaying "Hi, {username}" message inside an AnimatedCard */}
               {user && (
                 <AnimatedCard className="p-3">
-                  <Greeting username={user.username} />
+                  <Greeting username={user?.username} />
                 </AnimatedCard>
               )}
               <NormalMemories content={content} loading={loading} />

@@ -51,12 +51,7 @@ const Navbar = ({ onNewMemory }) => {
               <LogOut className="w-5 h-5 text-gray-400 hover:text-white" />
             </button>
 
-            {/* Username Greeting (on large screens) */}
-            {/* {user && (
-              <span className="text-white text-lg hidden sm:inline">
-                Hi, {user.username}
-              </span>
-            )} */}
+          
           </div>
         </div>
       </Container>
