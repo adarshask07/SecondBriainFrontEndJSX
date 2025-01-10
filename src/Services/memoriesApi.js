@@ -174,3 +174,40 @@ export const deleteMemory = async (token, id) => {
         toast.dismiss(toastId);
     }
 };
+
+
+export const getMoreAboutCard = async (data, token) => {
+    try {
+      // Log the token for debugging purposes
+     
+  
+      // Make the API request
+      const response = await apiConnector(
+        "POST",
+        "/memories/tell-about-card",
+        { data: data },
+        {
+          Authorization: `Bearer ${token}`,
+        }
+      );
+  
+      // Check if the response indicates failure
+      if (!response?.data?.success) {
+        throw new Error(response?.data?.message || "Unknown error occurred");
+      }
+  
+      // Return the data if successful
+      return response?.data;
+    } catch (error) {
+      // Handle specific errors based on the error message
+      if (error.message === "token is invalid" ) {
+        handleTokenExpiry(); // Call a token expiry handler
+      } else {
+        console.error("Error in getMoreAboutCard:", error.message || error);
+      }
+  
+      // Return null for all other cases
+      return null;
+    }
+  };
+  

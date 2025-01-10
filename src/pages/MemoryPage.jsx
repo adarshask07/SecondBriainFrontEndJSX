@@ -4,9 +4,8 @@ import { Pencil, Trash2, Save, X, Calendar, ArrowLeft } from "lucide-react";
 
 import { AnimatedCard } from "@/Components/ui/AnimatedCard";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteMemory, getMemory, updateMemories } from "@/Services/memoriesApi";
+import { deleteMemory, getMemory, getMoreAboutCard, updateMemories } from "@/Services/memoriesApi";
 import { Skeleton } from "@/Components/ui/skeleton";
-
 
 const MemoryPage = () => {
   const { id } = useParams();
@@ -14,125 +13,106 @@ const MemoryPage = () => {
   const token = useSelector((state) => state.auth.token);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [memory, setMemory] = useState(null); // change initial state to null
-  const [editedMemory, setEditedMemory] = useState(null); // change initial state to null
+  const [memory, setMemory] = useState(null);
+  const [editedMemory, setEditedMemory] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [getMoreLoading, setGetMoreLoading] = useState(false);
+  const [moreData, setMoreData] = useState(null);
   const dispatch = useDispatch();
 
-  //   const memory =
-  //     {
-  //         "_id": "6777f955fcd84a939e13e4f2",
-  //         "title": "My First Marathon",
-  //         "content": "Running my first marathon was an incredible experience. The physical and mental endurance it took to complete it taught me the value of perseverance. Crossing that finish line was a moment of triumph for me.",
-  //         "tags": [
-  //             "Marathon",
-  //             "Fitness",
-  //             "Achievement",
-  //             "Endurance"
-  //         ],
-  //         "createdAt": "2025-01-03T14:51:01.990Z",
-  //         "updatedAt": "2025-01-03T14:51:01.990Z",
-
-  //     }
-
-  async function fetchMemory() {
+  const fetchMemory = async () => {
     setLoading(true);
-    setError(null); // Reset any previous errors
+    setGetMoreLoading(true) ;
+    setError(null);
 
     try {
       const response = await getMemory(token, id);
-      setMemory(response); // Set fetched memory to state
-      setEditedMemory(response); // Set the same data to editedMemory for editing
-      console.log(memory);
-    } catch (error) {
-      setError(error.message); // Set error state if any
+      setMemory(response);
+      setEditedMemory(response);
+      setLoading(false) ;
+      await fetchMoreInfo(response);
+    } catch (err) {
+      setError(err.message);
     } finally {
-      setLoading(false); // Stop loading after fetching
+      setGetMoreLoading(false);
     }
-  }
+  };
+
+  const fetchMoreInfo = async (memory) => {
+    try {
+      setGetMoreLoading(true);
+      const response = await getMoreAboutCard(memory, token);
+      if (response?.success) {
+        setMoreData(response.data);
+       
+      }
+    } catch (err) {
+      console.error("Error fetching more info:", err);
+    } finally {
+      setGetMoreLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchMemory();
-  }, []); // This will run when token or id changes
+  }, []);
 
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
+  const handleEdit = () => setIsEditing(true);
 
   const handleSave = async () => {
-    if (!editedMemory) return; // Exit early if there's nothing to save
-  
-    setIsEditing(false);
+    if (!editedMemory) return;
     setLoading(true);
-  
     try {
       const response = await updateMemories(token, editedMemory);
-      console.log(response); 
-  
       if (response) {
-        setMemory(response); // Update memory only if the API call is successful
-      } else {
-        console.error("Failed to update memory.");
+        setMemory(response);
+        setIsEditing(false);
+        await fetchMoreInfo(response) ;
       }
-    } catch (error) {
-      console.error("Error saving memory:", error);
+    } catch (err) {
+      console.error("Error saving memory:", err);
     } finally {
-      setLoading(false); // Ensure loading is turned off in all cases
+      setLoading(false);
     }
   };
-  
 
   const handleDelete = async (memoryId) => {
+    setLoading(true);
     try {
-      // Show confirmation to the user before deletion
-     
-    //   const confirmed = window.confirm("Are you sure you want to delete this memory?");
-    //   if (!confirmed) return;
-      setLoading(true);
-      // Dispatch delete action or make API call
-      const response = await deleteMemory(token, memoryId); // Assuming deleteMemory is an async action
-      console.log(response)
-  
+      const response = await deleteMemory(token, memoryId);
       if (response?.success) {
-        console.log("Memory deleted successfully:");
-        navigate("/memories"); // Navigate to the memories page
-      } 
-      
-    } catch (error) {
-      console.error("Error occurred while deleting memory:", error);
+        navigate("/memories");
+      }
+    } catch (err) {
+      console.error("Error deleting memory:", err);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false)
-
   };
-  
 
   const handleCancel = () => {
     setIsEditing(false);
     setEditedMemory({ ...memory });
   };
 
-  // Handle tag input changes
   const handleTagChange = (index, event) => {
     const newTags = [...editedMemory.tags];
     newTags[index] = event.target.value;
     setEditedMemory({ ...editedMemory, tags: newTags });
   };
 
-  // Add a new tag
   const handleAddTag = () => {
     setEditedMemory({ ...editedMemory, tags: [...editedMemory.tags, ""] });
   };
 
-  // Remove a tag
   const handleRemoveTag = (index) => {
     const newTags = editedMemory.tags.filter((_, i) => i !== index);
     setEditedMemory({ ...editedMemory, tags: newTags });
   };
 
-  // Avoid rendering until memory is fetched
   if (loading)
     return (
-      <div className="p-4 h-screen  bg-gray-800 shadow-md">
+      <div className="p-4 h-screen bg-gray-800 shadow-md">
         <Skeleton className="h-48 rounded-md mb-4" />
         <Skeleton className="h-6 w-1/2 mb-2" />
         <Skeleton className="h-6 w-1/3" />
@@ -143,7 +123,7 @@ const MemoryPage = () => {
     <div className="min-h-screen p-6 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-start justify-center">
       <AnimatedCard className="w-full sm:max-w-xl lg:max-w-2xl xl:max-w-3xl mx-auto">
         <button
-          onClick={() => window.history.back()} // Navigates to the previous page
+          onClick={() => window.history.back()}
           className="mb-4 text-gray-400 hover:text-white bg-gradient-to-br to-gray-900 px-4 py-2 rounded-lg transition-colors flex items-center space-x-2"
         >
           <ArrowLeft className="w-5 h-5" />
@@ -264,9 +244,29 @@ const MemoryPage = () => {
             {new Date(memory?.createdAt).toLocaleDateString() || "Loading..."}
           </div>
         </div>
+        <div className="mt-6  ">
+            <h4 className="text-xl font-semibold text-white mb-4">More Info From AI</h4>
+            {getMoreLoading ? (
+             <div className="p-4  bg-gray-800 shadow-md">
+             <Skeleton className="h-4 rounded-md mb-4" />
+             <Skeleton className="h-2 w-1/2 mb-2" />
+             <Skeleton className="h-2 w-1/3" />
+           </div>
+            ) : (
+              <div className="text-gray-300 space-y-3 bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50">
+                <h5 className="text-lg font-bold text-gray-200">{moreData?.title || ""}</h5>
+                <ul className="list-disc list-inside space-y-2">
+                  {moreData?.content?.map((item, index) => (
+                    <li key={index} className="text-gray-400">{item.point}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
       </AnimatedCard>
     </div>
-  );
-};
+  ) 
+}
 
-export default MemoryPage;
+
+export default MemoryPage ;

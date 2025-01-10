@@ -1,10 +1,12 @@
-import React from 'react';
+
 import { Pencil, Trash2, Calendar } from 'lucide-react';
 import { AnimatedCard } from './ui/AnimatedCard';
 
 
 
 export const MemoryCard = ({ memory }) => {
+
+
   return (
     <AnimatedCard>
       <div className="bg-gray-800/50 backdrop-blur-lg rounded-xl h-full p-6 border border-gray-700/50">
