@@ -11,17 +11,20 @@ import { NormalMemories } from "@/Components/NormalMemories";
 import { Container } from "@/Components/ui/Container";
 import { apiConnector } from "@/Services/apiConnector";
 import { getSearch } from "@/Services/searchApi";
+import { AnimatedCard } from "@/Components/ui/AnimatedCard";
+import Greeting from "@/Components/ui/Greetings";
 
 const Memories = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [aiResponse, setAIResponse] = useState(null);
   const [showSearchResults, setShowSearchResults] = useState(false);
-  const [relatedContent, setRelatedContent] = useState([])  ;
+  const [relatedContent, setRelatedContent] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const content = useSelector((state) => state.brain.memories || []);
   const token = useSelector((state) => state.auth.token);
-  const [loadingSearch, setLoadingSearch] = useState(false)
-  const loading = useSelector((state)=> state.brain.loading)
+  const [loadingSearch, setLoadingSearch] = useState(false);
+  const loading = useSelector((state) => state.brain.loading);
+  const user = useSelector((state) => state.profile.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -47,23 +50,18 @@ const Memories = () => {
       return;
     }
 
-
     try {
       setShowSearchResults(true);
-      setLoadingSearch(true) ;
-      const response = await getSearch(token, searchTerm) ;
+      setLoadingSearch(true);
+      const response = await getSearch(token, searchTerm);
       setAIResponse(response.data || []);
-      setRelatedContent(response.relatedData)
-      console.log(response)
-
-
-     
+      setRelatedContent(response.relatedData);
+      console.log(response);
     } catch (error) {
       console.error("Error fetching AI response:", error);
     }
-    setLoadingSearch(false) ;
+    setLoadingSearch(false);
   };
-
 
   const handleSearchTermChange = (term) => {
     setSearchTerm(term);
@@ -92,7 +90,10 @@ const Memories = () => {
           />
           {showSearchResults ? (
             <>
-              <AIResponseSection aiResponse={aiResponse}  loading={loadingSearch}/>
+              <AIResponseSection
+                aiResponse={aiResponse}
+                loading={loadingSearch}
+              />
               <RelatedMemoriesSection
                 relatedMemories={relatedContent}
                 searchTerm={searchTerm}
@@ -100,7 +101,15 @@ const Memories = () => {
               />
             </>
           ) : (
-            <NormalMemories content={content} loading={loading} />
+            <div>
+              {/* Displaying "Hi, {username}" message inside an AnimatedCard */}
+              {user && (
+                <AnimatedCard className="p-3">
+                  <Greeting username={user.username} />
+                </AnimatedCard>
+              )}
+              <NormalMemories content={content} loading={loading} />
+            </div>
           )}
         </Container>
       </main>

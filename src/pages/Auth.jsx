@@ -4,6 +4,8 @@ import { Brain } from "lucide-react";
 import { AnimatedCard } from "@/Components/ui/AnimatedCard";
 import { login, signup } from "@/Services/authApi";
 import { useDispatch, useSelector } from "react-redux";
+import boy from "@/assets/boy1.png";
+import Mylogo from "@/Components/ui/Mylogo";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -16,8 +18,6 @@ const Auth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -29,27 +29,37 @@ const Auth = () => {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     if (token) {
       navigate("/memories");
     }
-  
-  },[])
+  }, []);
 
   return (
     <div
       className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900
                   flex items-center justify-center p-4"
     >
+      
+
       <AnimatedCard className="max-w-md w-full">
-        <div className="bg-gray-800/50 backdrop-blur-lg p-8 rounded-xl border border-gray-700/50">
+      {/* <div className="w-full flex justify-center ">
+        <img src={boy} alt="Description of the image" className="w-16" />
+      </div> */}
+     
+        <div className="bg-gray-800/50 backdrop-blur-lg p-8 rounded-xl border border-gray-700/50 shadow-xl">
           <div className="text-center">
             <div className="relative inline-block">
-              <div className="absolute inset-0 bg-blue-500 blur-xl opacity-50 animate-pulse"></div>
-              <Brain className="relative h-16 w-16 text-blue-500 mx-auto" />
+              <div className="absolute inset-0 bg-blue-400 blur-3xl opacity-80 animate-pulse"></div>
+              {/* Your custom logo here */}
+              <Mylogo className="relative h-20 w-20 text-blue-500 mx-auto" />
             </div>
-            <h2 className="mt-6 text-3xl sm:text-4xl font-bold text-white">SecondBrain</h2>
-            <p className="mt-2 text-gray-400">Store your memories securely</p>
+            <h2 className="mt-6 text-3xl sm:text-4xl font-bold text-white tracking-wide">
+              SecondBrain
+            </h2>
+            <p className="mt-2 text-gray-400 italic">
+              Because even geniuses need a backup brain.
+            </p>
           </div>
 
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -59,9 +69,9 @@ const Auth = () => {
               </div>
             )}
 
-            <div className="space-y-4">
+            <div className="space-y-3">
               <div>
-                <label htmlFor="email" className="text-gray-300">
+                <label htmlFor="email" className="text-gray-300 text-sm">
                   Email
                 </label>
                 <input
@@ -69,18 +79,14 @@ const Auth = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="appearance-none rounded-xl relative block w-full px-3 py-2 mt-1
-                           bg-gray-700/50 border border-gray-600/50 text-white
-                           placeholder-gray-400 focus:outline-none focus:ring-2
-                           focus:ring-blue-500/50 focus:border-transparent
-                           transition-all duration-300"
+                  className="appearance-none rounded-xl relative block w-full px-4 py-3 mt-1 bg-gray-700/50 border border-gray-600/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-all duration-300"
                   required
                 />
               </div>
 
               {!isLogin && (
                 <div>
-                  <label htmlFor="username" className="text-gray-300">
+                  <label htmlFor="username" className="text-gray-300 text-sm">
                     Username
                   </label>
                   <input
@@ -88,18 +94,14 @@ const Auth = () => {
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="appearance-none rounded-xl relative block w-full px-3 py-2 mt-1
-                           bg-gray-700/50 border border-gray-600/50 text-white
-                           placeholder-gray-400 focus:outline-none focus:ring-2
-                           focus:ring-blue-500/50 focus:border-transparent
-                           transition-all duration-300"
+                    className="appearance-none rounded-xl relative block w-full px-4 py-3 mt-1 bg-gray-700/50 border border-gray-600/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-all duration-300"
                     required
                   />
                 </div>
               )}
 
               <div>
-                <label htmlFor="password" className="text-gray-300">
+                <label htmlFor="password" className="text-gray-300 text-sm">
                   Password
                 </label>
                 <input
@@ -107,11 +109,7 @@ const Auth = () => {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none rounded-xl relative block w-full px-3 py-2 mt-1
-                           bg-gray-700/50 border border-gray-600/50 text-white
-                           placeholder-gray-400 focus:outline-none focus:ring-2
-                           focus:ring-blue-500/50 focus:border-transparent
-                           transition-all duration-300"
+                  className="appearance-none rounded-xl relative block w-full px-4 py-3 mt-1 bg-gray-700/50 border border-gray-600/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-all duration-300"
                   required
                 />
               </div>
@@ -119,10 +117,7 @@ const Auth = () => {
 
             <button
               type="submit"
-              className="w-full flex justify-center py-3 px-4 rounded-xl
-                       text-white bg-blue-600 hover:bg-blue-700
-                       focus:outline-none focus:ring-2 focus:ring-offset-2
-                       focus:ring-blue-500 transition-colors duration-300"
+              className="w-full flex justify-center py-3 px-4 rounded-xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-300 shadow-lg transform "
             >
               {isLogin ? "Sign In" : "Sign Up"}
             </button>
@@ -131,7 +126,7 @@ const Auth = () => {
               <button
                 type="button"
                 onClick={() => setIsLogin(!isLogin)}
-                className="text-blue-400 hover:text-blue-300 transition-colors"
+                className="text-blue-400 hover:text-blue-300 transition-colors text-sm"
               >
                 {isLogin
                   ? "Don't have an account? Sign up"

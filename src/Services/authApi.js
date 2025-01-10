@@ -1,7 +1,8 @@
 
 import { apiConnector } from "./apiConnector";
-import { setError, setLoading, setToken } from "../Slices/authSlice";
+import { setError, setLoading, setToken } from "@/Slices/authSlice";
 import toast from "react-hot-toast";
+import { setUser } from "@/Slices/profileSlice";
 
 
 export function login (email, password,navigate) {
@@ -25,8 +26,10 @@ export function login (email, password,navigate) {
             }
         
             dispatch(setToken(response.data.token));
+            dispatch(setUser(response.data.user))
             
             localStorage.setItem("token",response.data.token);
+            localStorage.setItem("user", JSON.stringify(response.data.user))
             
             toast.success("Login Successful",{
                 id: toastId,

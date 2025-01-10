@@ -6,7 +6,7 @@ export const AnimatedCard = ({ children, className = '' }) => (
       opacity-0 animate-fadeIn
       transform transition-all duration-300 ease-out
       hover:scale-105 hover:shadow-xl
-      rounded-xl overflow-hidden
+      rounded-3xl overflow-hidden
       ${className}
     `}
   >
