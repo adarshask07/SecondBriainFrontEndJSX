@@ -36,9 +36,8 @@ const Auth = () => {
   }, []);
 
   return (
-
     
-<div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col p-4">
+<div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col items-center p-4">
   
   <div className="my-4 mx-auto w-full max-w-lg px-6 py-4 bg-gray-800/40 backdrop-blur-lg border border-gray-600 rounded-lg shadow-md text-center">
     <h2 className="text-xl sm:text-2xl font-semibold text-gray-100">
