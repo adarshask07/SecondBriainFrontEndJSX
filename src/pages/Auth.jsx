@@ -38,15 +38,23 @@ const Auth = () => {
   return (
     <div
       className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900
-                  flex items-center justify-center p-4"
+                  flex flex-col items-center  p-4"
     >
       
+      <div className="my-4 mx-auto w-full max-w-lg px-6 py-4 bg-gray-800/40 backdrop-blur-lg border border-gray-600 rounded-lg shadow-md text-center">
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-100">
+          Your memories, now in your language
+        </h2>
+        <p className="text-sm text-gray-300 mt-2 italic">
+          Because emotions feel best expressed in your mother tongue. ❤️
+        </p>
+      </div>
 
       <AnimatedCard className="max-w-md w-full">
-      {/* <div className="w-full flex justify-center ">
+        {/* <div className="w-full flex justify-center ">
         <img src={boy} alt="Description of the image" className="w-16" />
       </div> */}
-     
+
         <div className="bg-gray-800/50 backdrop-blur-lg p-8 rounded-xl border border-gray-700/50 shadow-xl">
           <div className="text-center">
             <div className="relative inline-block">
@@ -136,6 +144,10 @@ const Auth = () => {
           </form>
         </div>
       </AnimatedCard>
+
+      <footer className="text-center mt-4 text-gray-500">
+        Made with Love <span className="text-red-500">❤️</span> by Adarsh
+      </footer>
     </div>
   );
 };
